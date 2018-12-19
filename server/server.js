@@ -20,19 +20,19 @@ app.get('/get', (req ,res) => {
 });
 
 // Api post
-app.post('/post', function(request, respond) {
+app.post('/post', function(req, res) {
 
   let body = '';
   if (body != '') body = ''
 
-  let filePath = __dirname + '/data/data.txt';
-  request.on('data', function(data) {
+  let filePath = path.join(__dirname, 'data', `data.txt`);
+  req.on('data', function(data) {
     body += data;
   });
 
-  request.on('end', function (){
+  req.on('end', function (){
     fs.writeFile(filePath, body, function() {
-      respond.send(console.log('Yeah'));
+      res.send(console.log('Yeah'));
     });
   });
 });

@@ -11,17 +11,17 @@ list.controller('Render', ['$scope', '$http', function ($scope, $http) {
 
   // Upload on server + refetch data from serve after it
   $scope.upload = function() {
-    var config = {
+    let config = {
       headers: {'Content-Type': undefined},
       transformRequest: angular.identity
-    }
+    };
 
     return $http.post('/api/post', $scope.file[0], config)
       .then(res => {
         $scope.csv = {};
         $scope.xml = [];
 
-        getData('/api/get', $scope.csv, $scope.xml)
+        getData('/api/get', $scope.csv, $scope.xml, true);
       })
       .catch(err => console.log(err));
   };
@@ -38,12 +38,13 @@ list.controller('Render', ['$scope', '$http', function ($scope, $http) {
   };
 
   // Fetching data from server
-  function getData(url, csvObject, xmlArray) {
+  function getData(url, csvObject, xmlArray, post) {
     $http.get(url)
       .then(res => res.data)
       .then(data => {
         convertIntoCSV(data, csvObject)
         convertIntoXML(data, xmlArray)
+        if (post) createFile(data)
       })
       .catch(err => console.log(err));
   };
@@ -53,10 +54,11 @@ list.controller('Render', ['$scope', '$http', function ($scope, $http) {
 // Add ng-model for input[type='file']
 list.directive('selectNgFiles', function() {
   return {
-    require: "ngModel",
+    require: 'ngModel',
     link: function postLink(scope, elem, attrs, ngModel) {
-      elem.on("change", function(e) {
-        var files = elem[0].files;
+      elem.on('change', function(e) {
+        let files = elem[0].files;
+
         ngModel.$setViewValue(files);
       })
     }
@@ -138,4 +140,86 @@ function convertIntoJs(data) {
     sentences: sentences,
     words: words
   };
+};
+
+// Create file for download
+function createFile(data) {
+  // Check if file exists
+  if (!data.length) return;
+
+  // Save data into variable
+  let text = convertIntoJs(data);
+
+  /* -------------------------------- CSV  -------------------------------- */
+
+  // Empty object for data
+  let csvFile = {};
+
+  // toString method for object
+  csvFile.toString = function() {
+    // Create empty string
+    let string = ``;
+
+    for (let key in csvFile) {
+      // If key is 'toString' continue without adding it to string
+      if (key === 'toString') continue;
+
+      // For each key increment string with this key value
+      string += `${key}: ${csvFile[key]}\n`
+    };
+
+    return string
+  };
+
+  // Parse data into object
+  text.sentences.map((item, i) => csvFile[item] = text.words[i]);
+
+  /* -------------------------------- XML  -------------------------------- */
+
+  // Create <word></words> for xml type. DO NOT DELETE WHITESPACES, please
+  let xmlWords = text.words.map(item => item.map((elem, i, arr) => {
+    // No \n for last item.
+    if (i === arr.length - 1) return `    <word>${elem}</word>`
+
+    return `    <word>${elem}</word>\n`
+  }));
+
+  // Create <sentence></sentence> for xml type. DO NOT DELETE WHITESPACES, please
+  let xmlSentences = xmlWords.map((item, i, arr) => {
+    // No \n for last item
+    if (i === arr.length - 1) return `  <sentence>\n${item}\n  </sentence>`
+
+    return `  <sentence>\n${item}\n  </sentence>\n`
+  });
+
+  // Create xml file
+  let xmlFile =
+`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<text>
+${xmlSentences}
+</text>`;
+
+  // Download xml file (also remove commas)
+  downloadFile('data', 'xml', xmlFile.replace(/,/gi, ''));
+  downloadFile('data', 'csv', csvFile)
+};
+
+// Create downloading element
+const downloadFile = (filename, filetype, file) => {
+  // Create 'a' element for download
+  let elem = document.createElement('a');
+
+  // Specify 'a' element
+  elem.href = `data:text/${filetype};charset=utf-8,${encodeURIComponent(file)}`;
+  elem.download = `${filename}.${filetype}`;
+  elem.style.display = 'none';
+
+  // Append to body
+  document.body.appendChild(elem);
+
+  // Initiate click
+  elem.click();
+
+  // Remove from body
+  document.body.removeChild(elem);
 };

@@ -9,7 +9,7 @@
 
   <div  ng-app='essention' ng-controller="Render">
     <div class="TypeIn">
-      <h2>Type in ypur text</h2>
+      <h2>Type in your text</h2>
 
       <textarea ng-change="change(event)" ng-model="list" ng-click="event = $event">
       </textarea>
@@ -22,7 +22,7 @@
 
       <form role="form" enctype="multipart/form-data" name="myFile" ng-submit="upload()">
         <input type="file"  select-ng-files ng-model="file" name="myFile">
-        <button type="submit" >save</button>
+        <button type="submit" >Upload & Save</button>
       </form>
 
       <table ng-show="file.length">
