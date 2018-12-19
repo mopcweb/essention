@@ -1,8 +1,8 @@
 # Essention Test (AngularJs)
 
-## [See Demo here](https://essention.herokuapp.com/)
+### [See Demo here](https://essention.herokuapp.com/)
 
-## Git clone. Then:
+### Or git clone. Then:
 ```
 cd essention
 
