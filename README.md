@@ -2,7 +2,7 @@
 
 ## Git clone. Then:
 ```
-cd expression
+cd essention
 
 npm install
 
