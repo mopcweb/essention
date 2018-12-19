@@ -9,8 +9,7 @@ module.exports = {
      contentBase: './client/public',
      proxy: {
       '/api': {
-        target: 'http://localhost:5000',
-        pathRewrite: {'^/api' : ''}
+        target: 'http://localhost:5000'
       }
     }
    },

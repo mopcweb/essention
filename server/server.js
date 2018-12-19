@@ -10,17 +10,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
 
 // Api get
-app.get('/get', (req ,res) => {
+app.get('/api/get', (req ,res) => {
   const data = req.headers.data
   res.sendFile(path.join(__dirname, 'data', `data.txt`))
 });
 
 // Api post
-app.post('/post', function(req, res) {
+app.post('/api/post', function(req, res) {
 
   let body = '';
   if (body != '') body = ''
@@ -39,10 +39,10 @@ app.post('/post', function(req, res) {
 
 // Serve static files from build
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/public')));
+  app.use(express.static(path.join(__dirname, '../client/public')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
   });
 };
 
