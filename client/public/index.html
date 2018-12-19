@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:ng="http://angularjs.org">
+<head>
+  <meta charset="utf-8">
+  <title>Essention</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+  <div  ng-app='essention' ng-controller="Render">
+    <div class="TypeIn">
+      <h2>Type in ypur text</h2>
+
+      <textarea ng-change="change(event)" ng-model="list" ng-click="event = $event">
+      </textarea>
+
+      <output csv="csvText" xml="xmlText"></output>
+    </div>
+
+    <div class="Upload">
+      <h2>Upload file</h2>
+
+      <form role="form" enctype="multipart/form-data" name="myFile" ng-submit="upload()">
+        <input type="file"  select-ng-files ng-model="file" name="myFile">
+        <button type="submit" >save</button>
+      </form>
+
+      <table ng-show="file.length">
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Size</th>
+          <th>Type</th>
+        <tr>
+        <tr ng-repeat="file in file">
+          <td>{{file.name}}</td>
+          <td>{{file.lastModified | date  : 'MMMdd,yyyy'}}</td>
+          <td>{{file.size}}</td>
+          <td>{{file.type}}</td>
+        </tr>
+      </table>
+
+      <output csv="csv" xml="xml"></output>
+    </div>
+
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+  <script src="index.js"></script>
+
+</body>
+</html>

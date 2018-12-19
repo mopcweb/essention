@@ -1,0 +1,111 @@
+/* ------------------------------------------------------------------------ */
+/*                                Variables
+/* ------------------------------------------------------------------------ */
+
+// Colors
+$light: #fcfaf9
+$dark: #1c1c1c
+
+// Margin
+$margin: 25px
+
+// Border
+$radius: 10px
+
+/* ------------------------------------------------------------------------ */
+/*                                html, body & normalize
+/* ------------------------------------------------------------------------ */
+
+html, body
+  margin: 0
+  padding: 0
+  width: 100%
+  height: 100%
+
+body
+  overflow-x: hidden
+
+  *
+    box-sizing: border-box
+
+h1, h2, h3, ul, li, button, input, textarea
+  margin: 0
+  padding: 0
+  border: none
+  background: none
+
+ul
+  list-style: none
+
+/* ------------------------------------------------------------------------ */
+/*                                Client
+/* ------------------------------------------------------------------------ */
+
+.Xml, .Csv
+  margin: $margin auto
+  padding: $margin / 2
+  display: block
+  width: 90%
+  border: 1px solid $dark
+  border-radius: $radius
+  color: orange
+
+  i
+    color: green
+
+  span:first-of-type
+    margin: $margin / 2 auto
+    display: block
+    text-align: center
+    font-size: 1.5rem
+
+.Sentences
+  padding-left: $margin
+  color: red
+
+.Words
+  padding-left: $margin
+  color: green
+
+textarea
+  margin: $margin auto
+  padding: 10px
+  display: block
+  width: 90%
+  min-height: 100px
+  border: 1px solid $dark
+  border-radius: $radius
+
+h2, form
+  margin: $margin auto
+  text-align: center
+
+.TypeIn
+  padding-bottom: $margin
+
+  output > div
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+
+  .Xml, .Csv
+    width: calc(45% - 25px)
+    margin: $margin / 2 $margin
+
+.Upload
+
+form
+  padding-bottom: $margin
+  display: block
+
+input[type='submit'], button
+  padding: 5px 20px
+  border: 1px solid $dark
+  border-radius: $radius
+
+table
+  width: 100%
+
+  th, td
+    padding: 5px
+    border: 1px solid $dark
